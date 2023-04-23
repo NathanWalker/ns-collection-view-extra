@@ -1,11 +1,38 @@
-<ActionBar title="My App"> </ActionBar>
+<ActionBar title="NativeScript Inbox"> </ActionBar>
 
-<GridLayout>
-  <ListView [items]="items">
-    <ng-template let-item="item">
-      <StackLayout [nsRouterLink]="['/item', item.id]">
-        <Label [text]="item.name"></Label>
-      </StackLayout>
-    </ng-template>
-  </ListView>
-</GridLayout>
+<CollectionView
+  [items]="items"
+  layoutStyle="swipe"
+  (itemTap)="itemTap($event)"
+  (loaded)="loaded($event)"
+>
+  <ng-template let-item="item">
+    <GridLayout
+      [nsRouterLink]="['/item', item.id]"
+      rows="auto,auto,auto"
+      class="pl-4 pr-2 py-4 align-middle"
+    >
+      <Label
+        [text]="item.name"
+        class="text-[17px] font-bold align-middle"
+      ></Label>
+      <Label
+        row="1"
+        [text]="item.subject"
+        class="text-base leading-none align-middle"
+      ></Label>
+      <Label
+        row="2"
+        [text]="item.body"
+        class="text-base leading-none text-gray-500"
+        maxLines="2"
+      ></Label>
+      <GridLayout rowSpan="3" columns="auto,auto" class="align-top h-right">
+        <Label
+          [text]="item.date | date : 'shortDate'"
+          class="text-sm align-middle text-gray-500"
+        ></Label>
+      </GridLayout>
+    </GridLayout>
+  </ng-template>
+</CollectionView>
