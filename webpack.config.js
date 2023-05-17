@@ -1,10 +1,20 @@
 const webpack = require("@nativescript/webpack");
 
 module.exports = (env) => {
-	webpack.init(env);
+  webpack.init(env);
 
-	// Learn how to customize:
-	// https://docs.nativescript.org/webpack
+  // Learn how to customize:
+  // https://docs.nativescript.org/webpack
 
-	return webpack.resolveConfig();
+  webpack.chainWebpack((config) => {
+    // ignore base env tsconfig warning
+    config.set(
+      "ignoreWarnings",
+      (config.get("ignoreWarnings") || []).concat([
+        /app\/config/
+      ])
+    );
+  });
+
+  return webpack.resolveConfig();
 };
