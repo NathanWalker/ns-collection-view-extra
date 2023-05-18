@@ -250,5 +250,4 @@ export function createLayout(view: CollectionView) {
   );
 
   return new GridLayoutManager(Utils.android.getApplicationContext(), 1);
-  // return new androidx.recyclerview.widget.StaggeredGridLayoutManager(1,1);
 }
