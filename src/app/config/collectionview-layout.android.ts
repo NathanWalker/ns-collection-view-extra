@@ -251,3 +251,7 @@ export function createLayout(view: CollectionView) {
 
   return new GridLayoutManager(Utils.android.getApplicationContext(), 1);
 }
+
+export function applyEffects(collectionView: CollectionView) {
+
+}

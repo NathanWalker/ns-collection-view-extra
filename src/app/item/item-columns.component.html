@@ -1,0 +1,98 @@
+<ActionBar title="NativeScript CollectionView"> </ActionBar>
+
+<GridLayout rows="auto,*">
+  <GridLayout
+    columns="*,auto,auto,auto"
+    class="px-4 py-2 bg-slate-100"
+    (loaded)="loadedSearchContainer($event)"
+  >
+    <GridLayout>
+      <TextField
+        #textfield
+        class="py-2 text-lg"
+        hint="Search..."
+        style.placeholderColor="#aaa"
+        (textChange)="inputChange$.next(textfield.text)"
+        (loaded)="loadedTextField($event)"
+      ></TextField>
+      <Label
+        [visibility]="hasQuery ? 'visible' : 'hidden'"
+        [text]="'fa-times-circle' | fonticon"
+        class="align-middle h-right fa text-lg text-black/30"
+        (tap)="clear()"
+      ></Label>
+    </GridLayout>
+
+    <ContentView col="1" (tap)="setViewMode('100%', '100')">
+      <Label
+        [text]="'fa-th-list' | fonticon"
+        [ngClass]="colWidth === '100%' ? 'text-black' : 'text-black/30'"
+        class="align-middle pl-4 fa text-lg"
+      ></Label>
+    </ContentView>
+    <ContentView col="2" (tap)="setViewMode('50%', '29%')">
+      <Label
+        [text]="'fa-th-large' | fonticon"
+        [ngClass]="colWidth === '50%' ? 'text-black' : 'text-black/30'"
+        class="align-middle pl-4 fa text-lg"
+      ></Label>
+    </ContentView>
+    <ContentView col="3" (tap)="setViewMode('33.33%', '18%')">
+      <Label
+        [text]="'fa-table' | fonticon"
+        [ngClass]="colWidth === '33.33%' ? 'text-black' : 'text-black/30'"
+        class="align-middle pl-4 fa text-lg"
+      ></Label>
+    </ContentView>
+  </GridLayout>
+  <PullToRefresh
+    row="1"
+    (refresh)="refreshList($event)"
+    indicatorFillColor="#f1f5f9"
+    indicatorColor="rgb(0 0 0 / 0.3)"
+  >
+    <CollectionView
+      [items]="items"
+      [colWidth]="colWidth"
+      [rowHeight]="rowHeight"
+      [itemTemplateSelector]="templateSelector"
+      (itemTap)="itemTap($event)"
+      (loadMoreItems)="loadMoreItems()"
+      (loaded)="loadedCollectionView($event)"
+      iosOverflowSafeArea="true"
+    >
+      <ng-template cvTemplateKey="1x1" let-item="item">
+        <GridLayout
+          [nsRouterLink]="['/item', item.id]"
+          rows="auto"
+          columns="auto,*"
+          class="pl-4 pr-2 py-4 align-middle"
+        >
+          <ImageCacheIt
+            [src]="item?.url"
+            stretch="aspectFill"
+            class="align-middle rounded-full"
+            width="65"
+            height="65"
+          ></ImageCacheIt>
+          <Label
+            col="1"
+            [text]="item?.title"
+            class="ml-4 text-base text-black font-semibold leading-none align-middle"
+            textWrap="true"
+          ></Label>
+        </GridLayout>
+      </ng-template>
+      <ng-template cvTemplateKey="2x2" let-item="item" let-index="index">
+        <GridLayout class="mt-1" [class.mr-1]="index % 2 == 0">
+          <ImageCacheIt [src]="item?.url" stretch="aspectFill"></ImageCacheIt>
+        </GridLayout>
+      </ng-template>
+      <ng-template cvTemplateKey="3x3" let-item="item" let-index="index">
+        <GridLayout class="border-white border-2">
+          <ImageCacheIt [src]="item?.url" stretch="aspectFill"></ImageCacheIt>
+        </GridLayout>
+      </ng-template>
+    </CollectionView>
+  </PullToRefresh>
+</GridLayout>

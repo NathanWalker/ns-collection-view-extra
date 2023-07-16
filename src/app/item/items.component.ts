@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { CollectionView } from "@nstudio/ui-collectionview";
 import { Item } from "./item";
 import { ItemService } from "./item.service";
@@ -10,10 +10,11 @@ import { ObservableArray } from "@nativescript/core";
   templateUrl: "./items.component.html",
 })
 export class ItemsComponent implements OnInit {
+  itemService = inject(ItemService);
   items: ObservableArray<Item>;
   collectionView: CollectionView;
 
-  constructor(private itemService: ItemService) {
+  constructor() {
     CollectionView.registerLayoutStyle("swipe", {
       createLayout,
     });
